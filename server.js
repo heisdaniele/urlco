@@ -19,6 +19,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve the track.html file for tracking analytics
+app.get('/track/:shortUrl', (req, res) => {
+    res.sendFile(path.join(__dirname, 'track.html'));
+});
+
 // Handle URL shortening
 app.post('/api/shorten', async (req, res) => {
     const { longUrl } = req.body;
@@ -61,6 +66,23 @@ app.get('/:shortUrl', async (req, res) => {
         .eq('short_url', shortUrl);
 
     res.redirect(original_url);
+});
+
+// Handle click count tracking
+app.get('/api/track', async (req, res) => {
+    const { shortUrl } = req.query;
+
+    const { data, error } = await supabase
+        .from('urls')
+        .select('click_count')
+        .eq('short_url', shortUrl)
+        .single();
+
+    if (error || !data) {
+        return res.status(404).json({ error: 'URL not found' });
+    }
+
+    res.json({ clickCount: data.click_count });
 });
 
 app.listen(port, () => {
