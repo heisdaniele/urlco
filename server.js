@@ -63,23 +63,6 @@ app.get('/:shortUrl', async (req, res) => {
     res.redirect(original_url);
 });
 
-// Handle click count tracking
-app.get('/api/track', async (req, res) => {
-    const { shortUrl } = req.query;
-
-    const { data, error } = await supabase
-        .from('urls')
-        .select('click_count')
-        .eq('short_url', shortUrl)
-        .single();
-
-    if (error || !data) {
-        return res.status(404).json({ error: 'URL not found' });
-    }
-
-    res.json({ clickCount: data.click_count });
-});
-
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });

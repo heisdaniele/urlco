@@ -45,6 +45,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('url-form');
             const result = document.getElementById('result');
+            const trackForm = document.getElementById('track-form');
+            const trackResult = document.getElementById('track-result');
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -68,6 +70,29 @@
                     }
                 } catch (error) {
                     result.textContent = `Error: ${error.message}`;
+                }
+            });
+
+            trackForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const shortUrl = document.getElementById('short-url').value;
+
+                try {
+                    const response = await fetch(`/api/track?shortUrl=${shortUrl}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        trackResult.textContent = `Click Count: ${data.clickCount}`;
+                    } else {
+                        trackResult.textContent = `Error: ${data.error}`;
+                    }
+                } catch (error) {
+                    trackResult.textContent = `Error: ${error.message}`;
                 }
             });
         });
@@ -167,13 +192,17 @@
         </div>
     </section>
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- ... (head content remains the same) ... -->
-</head>
-<body class="bg-light">
-    <!-- ... (navigation remains the same) ... -->
+    <!-- Track Click Count Section -->
+    <section id="track" class="py-24 bg-gradient-to-b from-light to-primary/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-2xl font-bold text-dark mb-4">Track Click Count</h2>
+            <form id="track-form" class="mb-4">
+                <input type="text" id="short-url" class="border p-2 w-full mb-2" placeholder="Enter shortened URL" required>
+                <button type="submit" class="bg-primary text-white p-2 w-full">Track Click Count</button>
+            </form>
+            <div id="track-result" class="text-lg"></div>
+        </div>
+    </section>
 
     <!-- Features Section (Fixed) -->
     <section id="features" class="py-24 bg-white">
@@ -217,32 +246,6 @@
         </div>
     </section>
 
-    <!-- ... (rest of the content remains the same) ... -->
-
-    <script>
-        // ... (other JavaScript functions remain the same) ... 
-
-        // Fixed Contact Form Handling
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const submitButton = form.querySelector('button[type="submit"]');
-            
-            // Show loading state
-            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
-            submitButton.disabled = true;
-
-            // Simulate API request for demonstration
-            setTimeout(() => {
-                submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Send Message`;
-                submitButton.disabled = false;
-                form.reset();
-                alert('Thank you for reaching out! We will get back to you soon.');
-            }, 1500);
-        }
-    </script>
-</body>
-</html>
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-gradient-to-br from-dark to-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
