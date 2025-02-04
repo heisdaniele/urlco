@@ -41,37 +41,6 @@
             },
         };
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('url-form');
-            const result = document.getElementById('result');
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const originalUrl = document.getElementById('original-url').value;
-
-                try {
-                    const response = await fetch('/api/shorten', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ longUrl: originalUrl }),
-                    });
-
-                    const data = await response.json();
-                    if (response.ok) {
-                        const baseUrl = window.location.origin;
-                        result.textContent = `Shortened URL: ${baseUrl}/${data.shortUrl}`;
-                    } else {
-                        result.textContent = `Error: ${data.error}`;
-                    }
-                } catch (error) {
-                    result.textContent = `Error: ${error.message}`;
-                }
-            });
-        });
-    </script>
 </head>
 <body class="bg-light">
     <!-- Navigation -->
@@ -91,7 +60,7 @@
                     <a href="#features" class="text-slate-600 hover:text-primary transition-colors">Features</a>
                     <a href="#contact" class="text-slate-600 hover:text-primary transition-colors">Contact</a>
                     <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
-                        Get Started
+                        Track Click Count
                     </button>
                 </div>
                 
@@ -167,15 +136,7 @@
         </div>
     </section>
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- ... (head content remains the same) ... -->
-</head>
-<body class="bg-light">
-    <!-- ... (navigation remains the same) ... -->
-
-    <!-- Features Section (Fixed) -->
+    <!-- Features Section -->
     <section id="features" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -184,7 +145,7 @@
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Fixed Feature Card 1 -->
+                <!-- Feature Card 1 -->
                 <div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl relative">
                     <div class="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-lg">
                         Coming Soon
@@ -217,32 +178,6 @@
         </div>
     </section>
 
-    <!-- ... (rest of the content remains the same) ... -->
-
-    <script>
-        // ... (other JavaScript functions remain the same) ... 
-
-        // Fixed Contact Form Handling
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const submitButton = form.querySelector('button[type="submit"]');
-            
-            // Show loading state
-            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
-            submitButton.disabled = true;
-
-            // Simulate API request for demonstration
-            setTimeout(() => {
-                submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Send Message`;
-                submitButton.disabled = false;
-                form.reset();
-                alert('Thank you for reaching out! We will get back to you soon.');
-            }, 1500);
-        }
-    </script>
-</body>
-</html>
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-gradient-to-br from-dark to-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -440,6 +375,5 @@
             }, 1500);
         }
     </script>
-    
 </body>
 </html>
