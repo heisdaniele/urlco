@@ -12,10 +12,18 @@ const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname))); // Serve static files from root directory
+app.use(express.static(path.join(__dirname, '/'))); // Serve static files from root directory
 
 // Serve the index.html file at the root URL
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/track', (req, res) => {
+    res.sendFile(path.join(__dirname, 'track.html'));
+});
+
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
