@@ -45,7 +45,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('url-form');
             const result = document.getElementById('result');
-            const trackButton = document.getElementById('track-button');
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -64,8 +63,6 @@
                     if (response.ok) {
                         const baseUrl = window.location.origin;
                         result.textContent = `Shortened URL: ${baseUrl}/${data.shortUrl}`;
-                        trackButton.style.display = 'block';
-                        trackButton.href = `/track/${data.shortUrl}`;
                     } else {
                         result.textContent = `Error: ${data.error}`;
                     }
@@ -109,16 +106,74 @@
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-24 bg-gradient-to-b from-primary/5 to-light">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl font-bold text-dark mb-4">Shorten Your URLs with Midget</h1>
-            <p class="text-slate-600 text-lg mb-8">A modern URL shortener that makes your links more manageable and trackable.</p>
-            <form id="url-form" class="mb-4">
-                <input type="url" id="original-url" class="border p-2 w-full mb-2" placeholder="Enter URL to shorten" required>
-                <button type="submit" class="bg-primary text-white p-2 w-full">Shorten URL</button>
-            </form>
-            <div id="result" class="text-lg mb-4"></div>
-            <a id="track-button" href="#" class="bg-secondary text-white p-2 w-full rounded-lg hover:bg-primary transition-all transform hover:scale-105 active:scale-95 text-lg font-medium shadow-lg" style="display: none;">Track Count</a>
+            <div class="max-w-3xl mx-auto">
+                <h1 class="text-5xl font-bold text-dark mb-6 animate-slide-up">
+                    Shorten Links, 
+                    <span class="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+                        Amplify Reach
+                    </span>
+                </h1>
+                <p class="text-xl text-slate-600 mb-8 animate-slide-up [animation-delay:200ms]">
+                    Transform long URLs into concise, trackable links with our powerful platform
+                </p>
+                
+                <!-- URL Form -->
+                <div class="animate-slide-up [animation-delay:400ms]">
+                    <div class="bg-white rounded-xl shadow-lg p-1 transition-all duration-300 hover:shadow-xl">
+                        <div class="flex flex-col md:flex-row gap-2">
+                            <input 
+                                type="url" 
+                                id="url-input" 
+                                placeholder="Paste your long URL here..."
+                                class="w-full px-6 py-4 border-0 rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none text-lg"
+                            >
+                            <button 
+                                onclick="shortenUrl()"
+                                class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-secondary transition-all transform hover:scale-105 active:scale-95 text-lg font-medium shadow-lg"
+                            >
+                                Shorten Now
+                            </button>
+                        </div>
+                    </div>
+                    <p id="error-message" class="text-red-500 text-sm mt-2 hidden"></p>
+                </div>
+
+                <!-- Result Display -->
+                <div id="result-container" class="hidden mt-8 animate-fade-in">
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <input 
+                                id="short-url" 
+                                type="text" 
+                                readonly
+                                class="w-full px-4 py-3 bg-light rounded-lg border-2 border-primary/20 text-primary font-medium cursor-text truncate"
+                                onclick="this.select()"
+                            >
+                            <button 
+                                onclick="copyToClipboard()"
+                                class="flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-lg hover:bg-primary/20 transition-colors font-medium"
+                            >
+                                <i class="fas fa-copy"></i>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <div id="copy-success" class="mt-3 flex items-center justify-center gap-2 text-emerald-600 opacity-0 transition-opacity">
+                            <i class="fas fa-check-circle animate-success-bounce"></i>
+                            <span>Copied to clipboard!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... (head content remains the same) ... -->
+</head>
+<body class="bg-light">
+    <!-- ... (navigation remains the same) ... -->
 
     <!-- Features Section (Fixed) -->
     <section id="features" class="py-24 bg-white">
@@ -162,6 +217,32 @@
         </div>
     </section>
 
+    <!-- ... (rest of the content remains the same) ... -->
+
+    <script>
+        // ... (other JavaScript functions remain the same) ... 
+
+        // Fixed Contact Form Handling
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
+            submitButton.disabled = true;
+
+            // Simulate API request for demonstration
+            setTimeout(() => {
+                submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Send Message`;
+                submitButton.disabled = false;
+                form.reset();
+                alert('Thank you for reaching out! We will get back to you soon.');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-gradient-to-br from-dark to-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -183,6 +264,7 @@
                                 placeholder="John Doe"
                             >
                         </div>
+                        
                         <div>
                             <label class="block text-slate-300 mb-2 text-sm font-medium">Email Address</label>
                             <input 
@@ -190,20 +272,26 @@
                                 id="email" 
                                 required
                                 class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
-                                placeholder="john.doe@example.com"
+                                placeholder="john@company.com"
                             >
                         </div>
+                        
                         <div>
                             <label class="block text-slate-300 mb-2 text-sm font-medium">Message</label>
                             <textarea 
                                 id="message" 
+                                rows="5" 
                                 required
                                 class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
-                                placeholder="Your message here..."
-                                rows="4"
+                                placeholder="How can we help you?"
                             ></textarea>
                         </div>
-                        <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
+                        
+                        <button 
+                            type="submit" 
+                            class="w-full bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-all font-medium flex items-center justify-center gap-2"
+                        >
+                            <i class="fas fa-paper-plane"></i>
                             Send Message
                         </button>
                     </form>
