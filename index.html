@@ -66,43 +66,55 @@
           </a>
         </div>
         
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
-          <i class="fas fa-bars text-slate-600 text-xl"></i>
-        </button>
-      </div>
-    </div>
+       <!-- Mobile Menu Button -->
+<button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
+    <i class="fas fa-bars text-slate-600 text-xl"></i>
+  </button>
+  </div>
+  </div>
   
-    <!-- Mobile Menu Links (Hidden by Default) -->
-    <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
-      <ul class="px-4 py-2">
-        <li class="py-2">
-          <a href="#home" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
-        </li>
-        <li class="py-2">
-          <a href="#features" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
-        </li>
-        <li class="py-2">
-          <a href="#contact" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
-        </li>
-        <li class="py-2">
-          <a href="track.html" class="block">
-            <button class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
-              Track Click Count
-            </button>
-          </a>
-        </li>
-      </ul>
-    </div>
+  <!-- Mobile Menu Links (Hidden by Default) -->
+  <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
+    <ul class="px-4 py-2">
+      <li class="py-2">
+        <a href="#home" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
+      </li>
+      <li class="py-2">
+        <a href="#features" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
+      </li>
+      <li class="py-2">
+        <a href="#contact" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
+      </li>
+      <li class="py-2">
+        <a href="track.html" class="block">
+          <button class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
+            Track Click Count
+          </button>
+        </a>
+      </li>
+    </ul>
+  </div>
   </nav>
   
   <!-- JavaScript to Toggle Mobile Menu -->
   <script>
-    document.getElementById('mobile-menu').addEventListener('click', function () {
-      const menu = document.getElementById('mobile-menu-links');
-      menu.classList.toggle('hidden');
+    const mobileMenuButton = document.getElementById('mobile-menu');
+    const mobileMenuLinksContainer = document.getElementById('mobile-menu-links');
+  
+    // Toggle mobile menu when the hamburger button is clicked
+    mobileMenuButton.addEventListener('click', function () {
+      mobileMenuLinksContainer.classList.toggle('hidden');
+    });
+  
+    // Close the mobile menu when any link is clicked
+    const mobileMenuLinks = mobileMenuLinksContainer.querySelectorAll('a');
+    mobileMenuLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        mobileMenuLinksContainer.classList.add('hidden');
+      });
     });
   </script>
+  
   
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-24 bg-gradient-to-b from-primary/5 to-light">
