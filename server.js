@@ -19,10 +19,8 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false }
 });
 
-// Middleware
 app.use(bodyParser.json());
-// (Note: Express 4.16+ includes express.json(), so bodyParser.json() is optional)
-app.use(express.static(path.join(__dirname, '/'))); // Serve static files from the root directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve index.html at the root URL
 app.get('/', (req, res) => {
@@ -34,50 +32,60 @@ app.get('/track', (req, res) => {
   res.sendFile(path.join(__dirname, 'track.html'));
 });
 
-// Handle URL shortening
+// Handle URL shortening (using auto-generated alias)
 app.post('/api/shorten', async (req, res) => {
-  const { longUrl } = req.body;
-  const shortUrl = shortid.generate();
+  try {
+    const { longUrl } = req.body;
+    if (!longUrl) {
+      return res.status(400).json({ error: 'Missing required field: longUrl' });
+    }
 
-  const { data, error } = await supabase
-    .from('urls')
-    .insert([{ original_url: longUrl, short_url: shortUrl }])
-    .single();
+    // Generate an alias automatically using shortid
+    const shortUrl = shortid.generate();
 
-  if (error) {
-    console.error('Error shortening URL:', error.message);
-    return res.status(500).json({ error: 'Failed to shorten URL' });
+    // Insert into main_urls table
+    const { data, error } = await supabase
+      .from('main_urls')
+      .insert([{ original_url: longUrl, short_url: shortUrl }])
+      .single();
+
+    if (error) {
+      console.error('Error shortening URL:', error.message);
+      return res.status(500).json({ error: 'Failed to shorten URL' });
+    }
+
+    res.json({ shortUrl });
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  res.json({ shortUrl });
 });
 
-// Handle redirection and atomic click count update for short URLs
+// Handle redirection and atomic click count update for main_urls
 app.get('/:shortUrl', async (req, res) => {
-  const { shortUrl } = req.params;
-
   try {
+    const { shortUrl } = req.params;
     console.log(`Received alias: ${shortUrl}`);
 
-    // Retrieve the original URL for the alias
+    // Retrieve the original URL from main_urls table
     const { data, error } = await supabase
-      .from('urls')
+      .from('main_urls')
       .select('original_url')
       .eq('short_url', shortUrl)
       .single();
 
     if (error || !data) {
-      console.error(`URL not found for alias: ${shortUrl}`);
+      console.error(`Alias not found: ${shortUrl}`);
       return res.status(404).send('URL not found');
     }
 
-    // Atomically increment the click count using the RPC function
-    const { error: rpcError } = await supabase.rpc('increment_click_count', { p_alias: shortUrl });
+    // Atomically increment the click count using the RPC function for main_urls
+    const { data: newClickCount, error: rpcError } = await supabase.rpc('increment_click_count_main', { p_alias: shortUrl });
     if (rpcError) {
       console.error('Error incrementing click count via RPC:', rpcError);
       // Optionally, you can continue with the redirect even if the update fails.
     } else {
-      console.log(`Click count incremented for alias: ${shortUrl}`);
+      console.log(`New click count for alias ${shortUrl}:`, newClickCount);
     }
 
     console.log(`Redirecting to ${data.original_url}`);
@@ -95,4 +103,7 @@ app.get('*', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`Supabase connected to: ${supabaseUrl}`);
 });
+
+module.exports = app;
