@@ -19,7 +19,9 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false }
 });
 
+// Middleware
 app.use(bodyParser.json());
+// (Note: Express 4.16+ includes express.json(), so bodyParser.json() is optional)
 app.use(express.static(path.join(__dirname, '/'))); // Serve static files from the root directory
 
 // Serve index.html at the root URL
@@ -50,12 +52,14 @@ app.post('/api/shorten', async (req, res) => {
   res.json({ shortUrl });
 });
 
-// Handle redirection and atomic click count increment for short URLs
+// Handle redirection and atomic click count update for short URLs
 app.get('/:shortUrl', async (req, res) => {
   const { shortUrl } = req.params;
 
   try {
-    // Fetch the original URL using Supabase
+    console.log(`Received alias: ${shortUrl}`);
+
+    // Retrieve the original URL for the alias
     const { data, error } = await supabase
       .from('urls')
       .select('original_url')
@@ -67,17 +71,17 @@ app.get('/:shortUrl', async (req, res) => {
       return res.status(404).send('URL not found');
     }
 
-    // Atomically increment the click count using RPC
+    // Atomically increment the click count using the RPC function
     const { error: rpcError } = await supabase.rpc('increment_click_count', { p_alias: shortUrl });
-
     if (rpcError) {
-      console.error('Error incrementing click count:', rpcError);
-      // Continue redirecting even if the click count update fails
+      console.error('Error incrementing click count via RPC:', rpcError);
+      // Optionally, you can continue with the redirect even if the update fails.
+    } else {
+      console.log(`Click count incremented for alias: ${shortUrl}`);
     }
 
     console.log(`Redirecting to ${data.original_url}`);
     res.redirect(data.original_url);
-
   } catch (err) {
     console.error('Redirect Error:', err);
     res.status(500).send('Internal Server Error');
