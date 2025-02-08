@@ -7,7 +7,7 @@
     }
   ],
   "routes": [
-    { "src": "/track", "dest": "/track.html" },
+    { "src": "^/track/?$", "dest": "/track.html" },
     { "src": "/(.*)", "dest": "/server.js" }
   ]
 }
