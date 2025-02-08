@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Midget - Track URL Clicks</title>
+  <title>Midget Custom - Track URL Clicks</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -21,7 +21,7 @@
           },
           animation: {
             'fade-in': 'fadeIn 0.5s ease-out',
-            'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
           },
           keyframes: {
             fadeIn: {
@@ -43,60 +43,56 @@
 </head>
 <body class="bg-light flex flex-col min-h-screen">
 
-<!-- Navigation -->
-<nav class="bg-white/80 backdrop-blur-md shadow-sm fixed w-full z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <div class="flex items-center space-x-2">
-        <div class="p-2 bg-primary rounded-lg shadow-lg">
-         <a href="index.html" <i class="fas fa-link text-white text-xl"></i> </a>
+  <!-- Navigation -->
+  <nav class="bg-white/80 backdrop-blur-md shadow-sm fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-2">
+          <a href="index.html">
+            <div class="p-2 bg-primary rounded-lg shadow-lg">
+              <i class="fas fa-link text-white text-xl"></i>
+            </div>
+          </a>
+          <a href="index.html">
+            <span class="text-2xl font-bold text-dark">Midget</span>
+          </a>
         </div>
-        <a href="index.html">
-          <span class="text-2xl font-bold text-dark">Midget</span>
-        </a>
-        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Home</a>
+          <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Features</a>
+          <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Contact</a>
+        </div>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100" aria-expanded="false" aria-controls="mobile-menu-links">
+          <i class="fas fa-bars text-slate-600 text-xl"></i>
+        </button>
       </div>
-      
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Home</a>
-        <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Features</a>
-        <a href="index.html" class="text-slate-600 hover:text-primary transition-colors">Contact</a>
-      </div>
-      
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100" aria-expanded="false" aria-controls="mobile-menu-links">
-        <i class="fas fa-bars text-slate-600 text-xl"></i>
-      </button>
     </div>
-  </div>
-
-  <!-- Mobile Menu Links (Hidden by Default) -->
-  <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
-    <ul class="px-4 py-2">
-      <li class="py-2">
-        <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
-      </li>
-      <li class="py-2">
-        <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
-      </li>
-      <li class="py-2">
-        <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-<!-- JavaScript to Toggle Mobile Menu -->
-<script>
-  document.getElementById('mobile-menu').addEventListener('click', function () {
-    const menu = document.getElementById('mobile-menu-links');
-    menu.classList.toggle('hidden');
-    
-    // Toggle aria-expanded attribute for accessibility
-    const expanded = this.getAttribute('aria-expanded') === 'true';
-    this.setAttribute('aria-expanded', !expanded);
-  });
-</script>
+    <!-- Mobile Menu Links -->
+    <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
+      <ul class="px-4 py-2">
+        <li class="py-2">
+          <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
+        </li>
+        <li class="py-2">
+          <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
+        </li>
+        <li class="py-2">
+          <a href="index.html" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <script>
+    // Toggle mobile menu for accessibility
+    document.getElementById('mobile-menu').addEventListener('click', function () {
+      const menu = document.getElementById('mobile-menu-links');
+      menu.classList.toggle('hidden');
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !expanded);
+    });
+  </script>
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-4 py-32">
@@ -109,8 +105,8 @@
         <input
           type="text"
           id="shortUrlInput"
-          placeholder="e.g., midget.pro/abc123"
-          class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-dark"
+          placeholder="e.g., midget.pro/youralias"
+          class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-dark"
         />
       </div>
       <button
@@ -121,7 +117,7 @@
       </button>
       <div id="result" class="mt-6 p-4 bg-green-100 text-green-800 rounded-lg hidden">
         <p>
-          Click count:
+          Total Click Count:
           <span id="clickCount" class="font-bold"></span>
         </p>
       </div>
@@ -132,6 +128,7 @@
   <footer class="bg-dark text-slate-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="grid md:grid-cols-4 gap-8">
+        <!-- Brand Column -->
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <div class="p-2 bg-primary rounded-lg">
@@ -152,15 +149,17 @@
             </a>
           </div>
         </div>
+        <!-- Product Column -->
         <div>
           <h4 class="text-white font-semibold mb-4">Product</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="#" class="hover:text-primary transition-colors">Features</a></li>
-            <li><a href="#" class="hover:text-primary transition-colors">Pricing</a></li>
-            <li><a href="#" class="hover:text-primary transition-colors">API</a></li>
+            <li><a href="https://midget.pro" class="hover:text-primary transition-colors">Main Site</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Custom API</a></li>
             <li><a href="#" class="hover:text-primary transition-colors">Integrations</a></li>
           </ul>
         </div>
+        <!-- Resources Column -->
         <div>
           <h4 class="text-white font-semibold mb-4">Resources</h4>
           <ul class="space-y-2 text-sm">
@@ -170,6 +169,7 @@
             <li><a href="#" class="hover:text-primary transition-colors">Status</a></li>
           </ul>
         </div>
+        <!-- Legal Column -->
         <div>
           <h4 class="text-white font-semibold mb-4">Legal</h4>
           <ul class="space-y-2 text-sm">
@@ -180,19 +180,19 @@
           </ul>
         </div>
       </div>
-      <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
+      <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
         <p>&copy; 2025 Midget. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Supabase and JS Logic -->
+  <!-- Supabase and Tracking Logic -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // Replace these with your actual Supabase URL and Anon Key
+    // Replace with your actual Supabase URL and Anon Key for the custom site
     const SUPABASE_URL = 'https://nauwlyivjdzbuqarrxmf.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hdXdseWl2amR6YnVxYXJyeG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2NjI2OTUsImV4cCI6MjA1NDIzODY5NX0.YxqnVIauv2LWUIEWtBi7lSluUqTy6P2BwereAYNHgF8';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const trackButton = document.getElementById('trackButton');
@@ -206,23 +206,37 @@
         return;
       }
 
-      // Extract the code from the URL (assumes format: domain/shortcode)
+      // Extract the alias from the URL (assumes format: domain/alias)
       const urlParts = shortUrlInput.split('/');
-      const shortUrlCode = urlParts[urlParts.length - 1];
+      const alias = urlParts[urlParts.length - 1];
 
-      const { data, error } = await supabase
-        .from('urls')
+      // Query the custom_urls table for click count
+      const { data: customData, error: customError } = await supabase
+        .from('custom_urls')
         .select('click_count')
-        .eq('short_url', shortUrlCode)
+        .eq('custom_alias', alias)
         .single();
 
-      if (error || !data) {
+      // Query the main_urls table for click count
+      const { data: mainData, error: mainError } = await supabase
+        .from('main_urls')
+        .select('click_count')
+        .eq('short_url', alias)
+        .single();
+
+      // Handle errors (if both queries return errors, treat as not found)
+      if ((customError && !customData) && (mainError && !mainData)) {
         alert('URL not found or an error occurred.');
         resultDiv.classList.add('hidden');
-      } else {
-        clickCountSpan.textContent = data.click_count;
-        resultDiv.classList.remove('hidden');
+        return;
       }
+
+      const customClicks = customData ? customData.click_count : 0;
+      const mainClicks = mainData ? mainData.click_count : 0;
+      const totalClicks = customClicks + mainClicks;
+
+      clickCountSpan.textContent = totalClicks;
+      resultDiv.classList.remove('hidden');
     });
   </script>
 </body>
