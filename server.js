@@ -10,7 +10,14 @@ const port = process.env.PORT || 3000;
 // Supabase credentials from environment variables
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase credentials - check environment variables');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { persistSession: false }
+});
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/'))); // Serve static files from the root directory
@@ -37,37 +44,44 @@ app.post('/api/shorten', async (req, res) => {
 
   if (error) {
     console.error('Error shortening URL:', error.message);
-    console.error('Details:', error.details);
-    console.error('Hint:', error.hint);
     return res.status(500).json({ error: 'Failed to shorten URL' });
   }
 
   res.json({ shortUrl });
 });
 
-// Handle redirection and click count increment for short URLs
+// Handle redirection and atomic click count increment for short URLs
 app.get('/:shortUrl', async (req, res) => {
   const { shortUrl } = req.params;
 
-  const { data, error } = await supabase
-    .from('urls')
-    .select('original_url, click_count')
-    .eq('short_url', shortUrl)
-    .single();
+  try {
+    // Fetch the original URL using Supabase
+    const { data, error } = await supabase
+      .from('urls')
+      .select('original_url')
+      .eq('short_url', shortUrl)
+      .single();
 
-  if (error || !data) {
-    return res.status(404).send('URL not found');
+    if (error || !data) {
+      console.error(`URL not found for alias: ${shortUrl}`);
+      return res.status(404).send('URL not found');
+    }
+
+    // Atomically increment the click count using RPC
+    const { error: rpcError } = await supabase.rpc('increment_click_count', { p_alias: shortUrl });
+
+    if (rpcError) {
+      console.error('Error incrementing click count:', rpcError);
+      // Continue redirecting even if the click count update fails
+    }
+
+    console.log(`Redirecting to ${data.original_url}`);
+    res.redirect(data.original_url);
+
+  } catch (err) {
+    console.error('Redirect Error:', err);
+    res.status(500).send('Internal Server Error');
   }
-
-  // Increment click count
-  const { original_url, click_count } = data;
-  await supabase
-    .from('urls')
-    .update({ click_count: click_count + 1 })
-    .eq('short_url', shortUrl);
-
-  // Redirect to the original URL
-  res.redirect(original_url);
 });
 
 // Catch-all route: serve index.html for any unmatched routes
