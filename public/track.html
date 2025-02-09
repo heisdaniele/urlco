@@ -9,40 +9,33 @@
   <script>
     tailwind.config = {
       theme: {
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-        },
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
         extend: {
           colors: {
             primary: '#6366f1',
             secondary: '#8b5cf6',
             dark: '#0f172a',
-            light: '#f8fafc',
+            light: '#f8fafc'
           },
           animation: {
             'fade-in': 'fadeIn 0.5s ease-out',
             'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
           },
           keyframes: {
-            fadeIn: {
-              '0%': { opacity: 0 },
-              '100%': { opacity: 1 },
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(20px)', opacity: 0 },
-              '100%': { transform: 'translateY(0)', opacity: 1 },
-            },
-          },
-        },
-      },
+            fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            slideUp: { '0%': { transform: 'translateY(20px)', opacity: 0 }, '100%': { transform: 'translateY(0)', opacity: 1 } }
+          }
+        }
+      }
     };
   </script>
   <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-light flex flex-col min-h-screen">
-
   <!-- Navigation -->
   <nav class="bg-white/80 backdrop-blur-md shadow-sm fixed w-full z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,30 +89,32 @@
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-4 py-32">
-    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-8 animate-slide-up">
-      <h1 class="text-3xl font-bold text-dark mb-6 text-center">Track URL Clicks</h1>
+    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 animate-slide-up">
+      <h1 class="text-3xl font-bold text-dark mb-6 text-center">Track URL Analytics</h1>
       <div class="mb-4">
-        <label for="shortUrlInput" class="block text-sm font-medium text-dark">
-          Enter your shortened URL
-        </label>
-        <input
-          type="text"
-          id="shortUrlInput"
-          placeholder="e.g., midget.pro/youralias"
-          class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-dark"
-        />
+        <label for="shortUrlInput" class="block text-sm font-medium text-dark">Enter your shortened URL</label>
+        <input type="text" id="shortUrlInput" placeholder="e.g., midget.pro/youralias" class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-dark" />
       </div>
-      <button
-        id="trackButton"
-        class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-secondary transition-all"
-      >
-        Track Clicks
-      </button>
-      <div id="result" class="mt-6 p-4 bg-green-100 text-green-800 rounded-lg hidden">
-        <p>
-          Total Click Count:
-          <span id="clickCount" class="font-bold"></span>
-        </p>
+      <button id="trackButton" class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-secondary transition-all">Track Analytics</button>
+      <!-- Summary Section -->
+      <div id="summary" class="mt-6 p-4 bg-green-100 text-green-800 rounded-lg hidden">
+        <p class="text-xl font-bold">Total Clicks: <span id="clickCount"></span></p>
+        <p id="avgInterval" class="mt-2 text-sm"></p>
+      </div>
+      <!-- Charts Section -->
+      <div id="charts" class="mt-8 grid gap-8 hidden">
+        <!-- Location Chart -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <canvas id="locationChart"></canvas>
+        </div>
+        <!-- Device Chart -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <canvas id="deviceChart"></canvas>
+        </div>
+        <!-- Trend Chart -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <canvas id="trendChart"></canvas>
+        </div>
       </div>
     </div>
   </main>
@@ -138,15 +133,9 @@
           </div>
           <p class="text-sm">Modern URL Shortener that tracks your clicks effortlessly.</p>
           <div class="flex gap-4">
-            <a href="#" class="hover:text-primary transition-colors">
-              <i class="fab fa-twitter text-xl"></i>
-            </a>
-            <a href="#" class="hover:text-primary transition-colors">
-              <i class="fab fa-github text-xl"></i>
-            </a>
-            <a href="#" class="hover:text-primary transition-colors">
-              <i class="fab fa-linkedin text-xl"></i>
-            </a>
+            <a href="#" class="hover:text-primary transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+            <a href="#" class="hover:text-primary transition-colors"><i class="fab fa-github text-xl"></i></a>
+            <a href="#" class="hover:text-primary transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
           </div>
         </div>
         <!-- Product Column -->
@@ -186,18 +175,20 @@
     </div>
   </footer>
 
-  <!-- Supabase and Tracking Logic -->
+  <!-- Supabase & Analytics Logic -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // Replace with your actual Supabase URL and Anon Key for the custom site
+    // Replace with your actual Supabase URL and Anon Key
     const SUPABASE_URL = 'https://nauwlyivjdzbuqarrxmf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hdXdseWl2amR6YnVxYXJyeG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2NjI2OTUsImV4cCI6MjA1NDIzODY5NX0.YxqnVIauv2LWUIEWtBi7lSluUqTy6P2BwereAYNHgF8';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const trackButton = document.getElementById('trackButton');
-    const resultDiv = document.getElementById('result');
+    const summaryDiv = document.getElementById('summary');
     const clickCountSpan = document.getElementById('clickCount');
+    const avgIntervalP = document.getElementById('avgInterval');
+    const chartsDiv = document.getElementById('charts');
 
     trackButton.addEventListener('click', async () => {
       const shortUrlInput = document.getElementById('shortUrlInput').value.trim();
@@ -206,37 +197,169 @@
         return;
       }
 
-      // Extract the alias from the URL (assumes format: domain/alias)
+      // Extract alias from the URL (assumes format: domain/alias)
       const urlParts = shortUrlInput.split('/');
       const alias = urlParts[urlParts.length - 1];
 
-      // Query the custom_urls table for click count
-      const { data: customData, error: customError } = await supabase
+      // Determine if alias exists in custom_urls or main_urls
+      let recordId = null;
+      let urlType = null;
+
+      // Try custom_urls first
+      let { data: customData } = await supabase
         .from('custom_urls')
-        .select('click_count')
+        .select('id')
         .eq('custom_alias', alias)
         .single();
 
-      // Query the main_urls table for click count
-      const { data: mainData, error: mainError } = await supabase
-        .from('main_urls')
-        .select('click_count')
-        .eq('short_url', alias)
-        .single();
+      if (customData) {
+        recordId = customData.id;
+        urlType = 'custom';
+      } else {
+        // Then try main_urls
+        let { data: mainData } = await supabase
+          .from('main_urls')
+          .select('id')
+          .eq('short_url', alias)
+          .single();
+        if (mainData) {
+          recordId = mainData.id;
+          urlType = 'main';
+        }
+      }
 
-      // Handle errors (if both queries return errors, treat as not found)
-      if ((customError && !customData) && (mainError && !mainData)) {
+      if (!recordId) {
         alert('URL not found or an error occurred.');
-        resultDiv.classList.add('hidden');
+        summaryDiv.classList.add('hidden');
+        chartsDiv.classList.add('hidden');
         return;
       }
 
-      const customClicks = customData ? customData.click_count : 0;
-      const mainClicks = mainData ? mainData.click_count : 0;
-      const totalClicks = customClicks + mainClicks;
+      // Query the click_events table for events related to the recordId and urlType
+      const { data: clicksData, error: clicksError } = await supabase
+        .from('click_events')
+        .select('*')
+        .eq('url_id', recordId)
+        .eq('url_type', urlType);
+
+      if (clicksError) {
+        alert('An error occurred while fetching analytics.');
+        summaryDiv.classList.add('hidden');
+        chartsDiv.classList.add('hidden');
+        return;
+      }
+
+      // Calculate total clicks and average interval
+      const totalClicks = clicksData.length;
+      let avgIntervalText = '';
+      if (totalClicks > 1) {
+        const timestamps = clicksData
+          .map(click => new Date(click.timestamp).getTime())
+          .sort((a, b) => a - b);
+        let totalDiff = 0;
+        for (let i = 1; i < timestamps.length; i++) {
+          totalDiff += (timestamps[i] - timestamps[i - 1]);
+        }
+        const avgIntervalMs = totalDiff / (timestamps.length - 1);
+        function formatInterval(ms) {
+          const seconds = Math.floor(ms / 1000);
+          if (seconds < 60) {
+            return `${seconds} second(s)`;
+          } else {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes} minute(s) ${remainingSeconds} second(s)`;
+          }
+        }
+        avgIntervalText = `Average Interval: ${formatInterval(avgIntervalMs)}`;
+      } else {
+        avgIntervalText = 'Not enough data to calculate average interval.';
+      }
 
       clickCountSpan.textContent = totalClicks;
-      resultDiv.classList.remove('hidden');
+      avgIntervalP.textContent = avgIntervalText;
+      summaryDiv.classList.remove('hidden');
+
+      // Process data for charts
+      const locationCounts = {};
+      const deviceCounts = {};
+      const dailyClicks = {};
+
+      clicksData.forEach(click => {
+        const loc = click.location || 'Unknown';
+        locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+
+        const device = click.device_type || 'Unknown';
+        deviceCounts[device] = (deviceCounts[device] || 0) + 1;
+
+        const date = new Date(click.timestamp).toLocaleDateString();
+        dailyClicks[date] = (dailyClicks[date] || 0) + 1;
+      });
+
+      chartsDiv.classList.remove('hidden');
+
+      // Render Location Chart (Doughnut)
+      new Chart(document.getElementById('locationChart'), {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(locationCounts),
+          datasets: [{
+            label: 'Clicks by Location',
+            data: Object.values(locationCounts),
+            backgroundColor: ['#4CAF50', '#2196F3', '#FFC107', '#FF5722', '#9C27B0', '#009688'],
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'Clicks by Location' }
+          }
+        }
+      });
+
+      // Render Device Chart (Bar)
+      new Chart(document.getElementById('deviceChart'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(deviceCounts),
+          datasets: [{
+            label: 'Clicks by Device',
+            data: Object.values(deviceCounts),
+            backgroundColor: ['#42A5F5', '#66BB6A', '#FFCA28', '#FF7043']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Clicks by Device Type' }
+          }
+        }
+      });
+
+      // Render Trend Chart (Line)
+      new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+          labels: Object.keys(dailyClicks),
+          datasets: [{
+            label: 'Clicks Over Time',
+            data: Object.values(dailyClicks),
+            borderColor: '#FF5722',
+            backgroundColor: '#FFCCBC',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Clicks Over Time' }
+          }
+        }
+      });
     });
   </script>
 </body>
