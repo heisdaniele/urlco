@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midget - Modern URL Shortener</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                fontFamily: {
-                    sans: ['Inter', 'sans-serif'],
-                },
-                extend: {
-                    colors: {
-                        primary: '#6366f1',
-                        secondary: '#8b5cf6',
-                        dark: '#0f172a',
-                        light: '#f8fafc',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                        'success-bounce': 'successBounce 0.8s ease-out',
-                        'shake': 'shake 0.5s ease-in-out'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                        },
-                        shake: {
-                            '0%, 100%': { transform: 'translateX(0)' },
-                            '25%': { transform: 'translateX(-5px)' },
-                            '75%': { transform: 'translateX(5px)' },
-                        },
-                    },
-                },
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Midget - Modern URL Shortener</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            dark: '#0f172a',
+            light: '#f8fafc',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'fade-in': 'fadeIn 0.5s ease-out',
+            'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            'success-bounce': 'successBounce 0.8s ease-out',
+            'shake': 'shake 0.5s ease-in-out'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
             },
-        };
-    </script>
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '25%': { transform: 'translateX(-5px)' },
+              '75%': { transform: 'translateX(5px)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
 </head>
 <body class="bg-light">
   <!-- Navigation -->
-<nav class="bg-white/80 backdrop-blur-md shadow-sm fixed w-full z-50">
+  <nav class="bg-white/80 backdrop-blur-md shadow-sm fixed w-full z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex items-center space-x-2">
           <div class="p-2 bg-primary rounded-lg shadow-lg">
-          <i class="fas fa-link text-white text-xl"></i>
+            <i class="fas fa-link text-white text-xl"></i>
           </div>
           <span class="text-2xl font-bold text-dark">Midget</span>
         </div>
-        
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center space-x-8">
           <a href="#home" class="text-slate-600 hover:text-primary transition-colors">Home</a>
@@ -65,370 +64,355 @@
             </button>
           </a>
         </div>
-        
-       <!-- Mobile Menu Button -->
-<button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
-    <i class="fas fa-bars text-slate-600 text-xl"></i>
-  </button>
-  </div>
-  </div>
-  
-  <!-- Mobile Menu Links (Hidden by Default) -->
-  <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
-    <ul class="px-4 py-2">
-      <li class="py-2">
-        <a href="#home" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
-      </li>
-      <li class="py-2">
-        <a href="#features" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
-      </li>
-      <li class="py-2">
-        <a href="#contact" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
-      </li>
-      <li class="py-2">
-        <a href="track.html" class="block">
-          <button class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
-            Track Click Count
-          </button>
-        </a>
-      </li>
-    </ul>
-  </div>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
+          <i class="fas fa-bars text-slate-600 text-xl"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu Links -->
+    <div id="mobile-menu-links" class="hidden md:hidden bg-white shadow-sm">
+      <ul class="px-4 py-2">
+        <li class="py-2">
+          <a href="#home" class="block text-slate-600 hover:text-primary transition-colors">Home</a>
+        </li>
+        <li class="py-2">
+          <a href="#features" class="block text-slate-600 hover:text-primary transition-colors">Features</a>
+        </li>
+        <li class="py-2">
+          <a href="#contact" class="block text-slate-600 hover:text-primary transition-colors">Contact</a>
+        </li>
+        <li class="py-2">
+          <a href="track.html" class="block">
+            <button class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-all transform hover:-translate-y-0.5 shadow-md">
+              Track Click Count
+            </button>
+          </a>
+        </li>
+      </ul>
+    </div>
   </nav>
   
   <!-- JavaScript to Toggle Mobile Menu -->
   <script>
     const mobileMenuButton = document.getElementById('mobile-menu');
     const mobileMenuLinksContainer = document.getElementById('mobile-menu-links');
-  
-    // Toggle mobile menu when the hamburger button is clicked
-    mobileMenuButton.addEventListener('click', function () {
+    mobileMenuButton.addEventListener('click', () => {
       mobileMenuLinksContainer.classList.toggle('hidden');
     });
-  
-    // Close the mobile menu when any link is clicked
     const mobileMenuLinks = mobileMenuLinksContainer.querySelectorAll('a');
     mobileMenuLinks.forEach(link => {
-      link.addEventListener('click', function () {
+      link.addEventListener('click', () => {
         mobileMenuLinksContainer.classList.add('hidden');
       });
     });
   </script>
   
+  <!-- Hero Section -->
+  <section id="home" class="pt-32 pb-24 bg-gradient-to-b from-primary/5 to-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-5xl font-bold text-dark mb-6 animate-slide-up">
+          Shorten Links, 
+          <span class="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+            Amplify Reach
+          </span>
+        </h1>
+        <p class="text-xl text-slate-600 mb-8 animate-slide-up [animation-delay:200ms]">
+          Transform long URLs into concise, trackable links with our powerful platform
+        </p>
+        <!-- URL Form -->
+        <div class="animate-slide-up [animation-delay:400ms]">
+          <div class="bg-white rounded-xl shadow-lg p-1 transition-all duration-300 hover:shadow-xl">
+            <div class="flex flex-col md:flex-row gap-2">
+              <input 
+                type="url" 
+                id="url-input" 
+                placeholder="Paste your long URL here..."
+                class="w-full px-6 py-4 border-0 rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none text-lg"
+              >
+              <button 
+                onclick="shortenUrl()"
+                class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-secondary transition-all transform hover:scale-105 active:scale-95 text-lg font-medium shadow-lg"
+              >
+                Shorten Now
+              </button>
+            </div>
+          </div>
+          <p id="error-message" class="text-red-500 text-sm mt-2 hidden"></p>
+        </div>
   
-    <!-- Hero Section -->
-    <section id="home" class="pt-32 pb-24 bg-gradient-to-b from-primary/5 to-light">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h1 class="text-5xl font-bold text-dark mb-6 animate-slide-up">
-                    Shorten Links, 
-                    <span class="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-                        Amplify Reach
-                    </span>
-                </h1>
-                <p class="text-xl text-slate-600 mb-8 animate-slide-up [animation-delay:200ms]">
-                    Transform long URLs into concise, trackable links with our powerful platform
-                </p>
-                
-                <!-- URL Form -->
-                <div class="animate-slide-up [animation-delay:400ms]">
-                    <div class="bg-white rounded-xl shadow-lg p-1 transition-all duration-300 hover:shadow-xl">
-                        <div class="flex flex-col md:flex-row gap-2">
-                            <input 
-                                type="url" 
-                                id="url-input" 
-                                placeholder="Paste your long URL here..."
-                                class="w-full px-6 py-4 border-0 rounded-xl focus:ring-2 focus:ring-primary/50 focus:outline-none text-lg"
-                            >
-                            <button 
-                                onclick="shortenUrl()"
-                                class="bg-primary text-white px-8 py-4 rounded-xl hover:bg-secondary transition-all transform hover:scale-105 active:scale-95 text-lg font-medium shadow-lg"
-                            >
-                                Shorten Now
-                            </button>
-                        </div>
-                    </div>
-                    <p id="error-message" class="text-red-500 text-sm mt-2 hidden"></p>
-                </div>
-
-                <!-- Result Display -->
-                <div id="result-container" class="hidden mt-8 animate-fade-in">
-                    <div class="bg-white rounded-xl shadow-md p-6">
-                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                            <input 
-                                id="short-url" 
-                                type="text" 
-                                readonly
-                                class="w-full px-4 py-3 bg-light rounded-lg border-2 border-primary/20 text-primary font-medium cursor-text truncate"
-                                onclick="this.select()"
-                            >
-                            <button 
-                                onclick="copyToClipboard()"
-                                class="flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-lg hover:bg-primary/20 transition-colors font-medium"
-                            >
-                                <i class="fas fa-copy"></i>
-                                <span>Copy</span>
-                            </button>
-                        </div>
-                        <div id="copy-success" class="mt-3 flex items-center justify-center gap-2 text-emerald-600 opacity-0 transition-opacity">
-                            <i class="fas fa-check-circle animate-success-bounce"></i>
-                            <span>Copied to clipboard!</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Result Display -->
+        <div id="result-container" class="hidden mt-8 animate-fade-in">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+              <input 
+                id="short-url" 
+                type="text" 
+                readonly
+                class="w-full px-4 py-3 bg-light rounded-lg border-2 border-primary/20 text-primary font-medium cursor-text truncate"
+                onclick="this.select()"
+              >
+              <button 
+                onclick="copyToClipboard()"
+                class="flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-lg hover:bg-primary/20 transition-colors font-medium"
+              >
+                <i class="fas fa-copy"></i>
+                <span>Copy</span>
+              </button>
             </div>
+            <div id="copy-success" class="mt-3 flex items-center justify-center gap-2 text-emerald-600 opacity-0 transition-opacity">
+              <i class="fas fa-check-circle animate-success-bounce"></i>
+              <span>Copied to clipboard!</span>
+            </div>
+          </div>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark mb-4">Powerful Features</h2>
-                <p class="text-slate-600 text-lg">Everything you need to manage and optimize your links</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-             
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section id="features" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-dark mb-4">Powerful Features</h2>
+        <p class="text-slate-600 text-lg">Everything you need to manage and optimize your links</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
         <!-- Feature Card 1 -->
-<div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl relative">
-    <!-- Larger Try It Now Button in Top-Right -->
-    <a href="track.html" class="absolute top-4 right-4 bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-      Try It Now
-    </a>
-
-    <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
-      <i class="fas fa-chart-line text-3xl"></i>
-    </div>
-    <h3 class="text-xl font-semibold text-dark mb-3">Advanced Analytics</h3>
-    <p class="text-slate-600">
-      Track clicks, locations, and devices in real-time with beautiful dashboards.
-    </p>
-  </div>
-
-  <!-- Feature Card 2 -->
-<div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl relative">
-    <!-- Larger Try It Now Button in Top-Right -->
-    <a href="custom.html" class="absolute top-4 right-4 bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-      Coming Soon
-    </a>
-    
-    <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
-      <i class="fas fa-palette text-3xl"></i>
-    </div>
-    <h3 class="text-xl font-semibold text-dark mb-3">Custom Branding</h3>
-    <p class="text-slate-600">
-      White-label solutions with custom domains and branded links
-    </p>
-  </div>
-
-                <!-- Feature Card 3 -->
-                <div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl">
-                    <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-3xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-dark mb-3">Enterprise Security</h3>
-                    <p class="text-slate-600">Military-grade encryption and spam protection for all your links</p>
-                </div>
-                
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-gradient-to-br from-dark to-slate-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-light mb-4">Get in Touch</h2>
-                <p class="text-slate-300 text-lg">We'd love to hear from you! Reach out for support or partnerships</p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-white/5 backdrop-blur-sm rounded-2xl shadow-xl p-8">
-                    <form id="contact-form" onsubmit="return handleContactSubmit(event)" class="space-y-6">
-                        <div>
-                            <label class="block text-slate-300 mb-2 text-sm font-medium">Full Name</label>
-                            <input 
-                                type="text" 
-                                id="name" 
-                                required
-                                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
-                                placeholder="John Doe"
-                            >
-                        </div>
-                        
-                        <div>
-                            <label class="block text-slate-300 mb-2 text-sm font-medium">Email Address</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                required
-                                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
-                                placeholder="john@company.com"
-                            >
-                        </div>
-                        
-                        <div>
-                            <label class="block text-slate-300 mb-2 text-sm font-medium">Message</label>
-                            <textarea 
-                                id="message" 
-                                rows="5" 
-                                required
-                                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
-                                placeholder="How can we help you?"
-                            ></textarea>
-                        </div>
-                        
-                        <button 
-                            type="submit" 
-                            class="w-full bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-all font-medium flex items-center justify-center gap-2"
-                        >
-                            <i class="fas fa-paper-plane"></i>
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
+        <div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl relative">
+          <a href="track.html" class="absolute top-4 right-4 bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+            Try It Now
+          </a>
+          <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
+            <i class="fas fa-chart-line text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-dark mb-3">Advanced Analytics</h3>
+          <p class="text-slate-600">
+            Track clicks, locations, and devices in real-time with beautiful dashboards.
+          </p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-slate-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="grid md:grid-cols-4 gap-8">
-                <!-- Brand Column -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-primary rounded-lg">
-                            <i class="fas fa-link text-white text-xl"></i>
-                        </div>
-                        <span class="text-2xl font-bold text-white">Midget</span>
-                    </div>
-                    <p class="text-sm">Simplifying digital connections through concise links</p>
-                    <div class="flex gap-4 text-slate-400">
-                        <a href="#" class="hover:text-primary transition-colors">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="hover:text-primary transition-colors">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
-                        <a href="#" class="hover:text-primary transition-colors">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product Column -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Product</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-primary transition-colors">Features</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Pricing</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">API</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Integrations</a></li>
-                    </ul>
-                </div>
-
-                <!-- Resources Column -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-primary transition-colors">Documentation</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Help Center</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Status</a></li>
-                    </ul>
-                </div>
-
-                <!-- Legal Column -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Legal</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">Cookie Policy</a></li>
-                        <li><a href="#" class="hover:text-primary transition-colors">GDPR</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-400">
-                <p>&copy; 2023 Midget. All rights reserved.</p>
-            </div>
+  
+        <!-- Feature Card 2 -->
+        <div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl relative">
+          <a href="custom.html" class="absolute top-4 right-4 bg-primary text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+            Coming Soon
+          </a>
+          <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
+            <i class="fas fa-palette text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-dark mb-3">Custom Branding</h3>
+          <p class="text-slate-600">
+            White-label solutions with custom domains and branded links.
+          </p>
         </div>
-    </footer>
-
-    <script>
-        // Smooth scroll functionality
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+  
+        <!-- Feature Card 3 -->
+        <div class="feature-card p-8 bg-light rounded-2xl transition-all hover:transform hover:-translate-y-2 hover:shadow-xl">
+          <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
+            <i class="fas fa-shield-alt text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-dark mb-3">Enterprise Security</h3>
+          <p class="text-slate-600">
+            Military-grade encryption and spam protection for all your links.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 bg-gradient-to-br from-dark to-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-light mb-4">Get in Touch</h2>
+        <p class="text-slate-300 text-lg">We'd love to hear from you! Reach out for support or partnerships.</p>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-white/5 backdrop-blur-sm rounded-2xl shadow-xl p-8">
+          <form id="contact-form" onsubmit="return handleContactSubmit(event)" class="space-y-6">
+            <div>
+              <label class="block text-slate-300 mb-2 text-sm font-medium">Full Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                required
+                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
+                placeholder="John Doe"
+              >
+            </div>
+            <div>
+              <label class="block text-slate-300 mb-2 text-sm font-medium">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                required
+                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
+                placeholder="john@company.com"
+              >
+            </div>
+            <div>
+              <label class="block text-slate-300 mb-2 text-sm font-medium">Message</label>
+              <textarea 
+                id="message" 
+                rows="5" 
+                required
+                class="w-full px-4 py-3 bg-white/5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none text-slate-200 placeholder-slate-400 transition-all"
+                placeholder="How can we help you?"
+              ></textarea>
+            </div>
+            <button 
+              type="submit" 
+              class="w-full bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-all font-medium flex items-center justify-center gap-2"
+            >
+              <i class="fas fa-paper-plane"></i>
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="bg-dark text-slate-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid md:grid-cols-4 gap-8">
+        <!-- Brand Column -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-primary rounded-lg">
+              <i class="fas fa-link text-white text-xl"></i>
+            </div>
+            <span class="text-2xl font-bold text-white">Midget</span>
+          </div>
+          <p class="text-sm">Simplifying digital connections through concise links</p>
+          <div class="flex gap-4 text-slate-400">
+            <a href="#" class="hover:text-primary transition-colors">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="hover:text-primary transition-colors">
+              <i class="fab fa-github text-xl"></i>
+            </a>
+            <a href="#" class="hover:text-primary transition-colors">
+              <i class="fab fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+  
+        <!-- Product Column -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">Product</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-primary transition-colors">Features</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Pricing</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">API</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Integrations</a></li>
+          </ul>
+        </div>
+  
+        <!-- Resources Column -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">Resources</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-primary transition-colors">Documentation</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Help Center</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Status</a></li>
+          </ul>
+        </div>
+  
+        <!-- Legal Column -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Cookie Policy</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">GDPR</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-400">
+        <p>&copy; 2023 Midget. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Inline JavaScript -->
+  <script>
+    // Smooth scroll functionality for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
         });
-
-        // URL Shortener Logic
-        async function shortenUrl() {
-            const urlInput = document.getElementById('url-input').value;
-            const errorMessage = document.getElementById('error-message');
-            const resultContainer = document.getElementById('result-container');
-            const shortUrlInput = document.getElementById('short-url');
-
-            try {
-                const response = await fetch('/api/shorten', { // Use relative URL
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ longUrl: urlInput }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to shorten URL');
-                }
-
-                const data = await response.json();
-                const baseUrl = window.location.origin;
-                shortUrlInput.value = `${baseUrl}/${data.shortUrl}`;
-                resultContainer.classList.remove('hidden');
-                errorMessage.classList.add('hidden');
-            } catch (error) {
-                errorMessage.textContent = error.message;
-                errorMessage.classList.remove('hidden');
-                resultContainer.classList.add('hidden');
-            }
+      });
+    });
+  
+    // URL Shortener Logic for Main Site
+    async function shortenUrl() {
+      const urlInput = document.getElementById('url-input').value;
+      const errorMessage = document.getElementById('error-message');
+      const resultContainer = document.getElementById('result-container');
+      const shortUrlInput = document.getElementById('short-url');
+  
+      try {
+        const response = await fetch('/api/shorten', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ longUrl: urlInput }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to shorten URL');
         }
-
-        // Clipboard Copy
-        async function copyToClipboard() {
-            try {
-                await navigator.clipboard.writeText(document.getElementById('short-url').value);
-                const successElement = document.getElementById('copy-success');
-                successElement.style.opacity = '1';
-                setTimeout(() => successElement.style.opacity = '0', 2000);
-            } catch (err) {
-                alert('Failed to copy URL. Please copy manually.');
-            }
-        }
-
-        // Contact Form Handling
-        function handleContactSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const submitButton = form.querySelector('button[type="submit"]');
-            
-            // Show loading state
-            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
-            submitButton.disabled = true;
-
-            // Simulate API request for demonstration
-            setTimeout(() => {
-                submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Send Message`;
-                submitButton.disabled = false;
-                form.reset();
-                alert('Thank you for reaching out! We will get back to you soon.');
-            }, 1500);
-        }
-    </script>
+  
+        const data = await response.json();
+        const baseUrl = window.location.origin;
+        shortUrlInput.value = `${baseUrl}/${data.shortUrl}`;
+        resultContainer.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+      } catch (error) {
+        errorMessage.textContent = error.message;
+        errorMessage.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
+      }
+    }
+  
+    // Clipboard Copy Functionality
+    async function copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText(document.getElementById('short-url').value);
+        const successElement = document.getElementById('copy-success');
+        successElement.style.opacity = '1';
+        setTimeout(() => successElement.style.opacity = '0', 2000);
+      } catch (err) {
+        alert('Failed to copy URL. Please copy manually.');
+      }
+    }
+  
+    // Contact Form Handling
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const submitButton = form.querySelector('button[type="submit"]');
+      
+      // Show loading state
+      submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
+      submitButton.disabled = true;
+  
+      // Simulate API request for demonstration
+      setTimeout(() => {
+        submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Send Message`;
+        submitButton.disabled = false;
+        form.reset();
+        alert('Thank you for reaching out! We will get back to you soon.');
+      }, 1500);
+    }
+  </script>
 </body>
 </html>

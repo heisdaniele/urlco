@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const shortid = require('shortid');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -61,16 +62,16 @@ app.post('/api/shorten', async (req, res) => {
   }
 });
 
-// Handle redirection and atomic click count update for main_urls
+// Handle redirection and track click events for main_urls
 app.get('/:shortUrl', async (req, res) => {
   try {
     const { shortUrl } = req.params;
     console.log(`Received alias: ${shortUrl}`);
 
-    // Retrieve the original URL from main_urls table
+    // Retrieve the original URL from main_urls table (also get the record id)
     const { data, error } = await supabase
       .from('main_urls')
-      .select('original_url')
+      .select('original_url, id')
       .eq('short_url', shortUrl)
       .single();
 
@@ -79,13 +80,44 @@ app.get('/:shortUrl', async (req, res) => {
       return res.status(404).send('URL not found');
     }
 
-    // Atomically increment the click count using the RPC function for main_urls
-    const { data: newClickCount, error: rpcError } = await supabase.rpc('increment_click_count_main', { p_alias: shortUrl });
-    if (rpcError) {
-      console.error('Error incrementing click count via RPC:', rpcError);
-      // Optionally, you can continue with the redirect even if the update fails.
-    } else {
-      console.log(`New click count for alias ${shortUrl}:`, newClickCount);
+    // Extract IP and device information from the request headers
+    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const userAgent = req.headers['user-agent'] || '';
+    const deviceType = /mobile/i.test(userAgent) ? 'Mobile' : 'Desktop';
+
+    // Use ipinfo.io to get location information
+    let location = 'Unknown';
+    try {
+      const ipinfoToken = process.env.IPINFO_TOKEN;
+      if (ipinfoToken && ipAddress) {
+        // If ipAddress is a list, take the first value and remove any port number
+        let ip = ipAddress.split(',')[0].trim().split(':')[0];
+        // Check for local addresses
+        if (ip === '::1' || ip === '127.0.0.1') {
+          location = 'Localhost';
+        } else {
+          const response = await axios.get(`https://ipinfo.io/${ip}/json?token=${ipinfoToken}`);
+          if (response && response.data) {
+            const { city, region, country } = response.data;
+            location = `${city || ''}${city && region ? ', ' : ''}${region || ''}${(city || region) && country ? ', ' : ''}${country || ''}`;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching location info:", err.message);
+    }
+
+    // Insert a new click event into the click_events table for main_urls
+    const { error: clickError } = await supabase
+      .from('click_events')
+      .insert({
+        url_id: data.id,
+        url_type: 'main',
+        location: location,
+        device_type: deviceType
+      });
+    if (clickError) {
+      console.error('Error inserting click event:', clickError);
     }
 
     console.log(`Redirecting to ${data.original_url}`);
