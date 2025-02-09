@@ -88,21 +88,34 @@
   </script>
 
   <!-- Main Content -->
-  <main class="flex-grow container mx-auto px-4 py-32">
-    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 animate-slide-up">
+  <!-- Increase container width to accommodate charts -->
+  <main class="flex-grow container mx-auto px-4 py-32 max-w-4xl">
+    <div class="mx-auto bg-white rounded-xl shadow-lg p-8 animate-slide-up">
       <h1 class="text-3xl font-bold text-dark mb-6 text-center">Track URL Analytics</h1>
       <div class="mb-4">
-        <label for="shortUrlInput" class="block text-sm font-medium text-dark">Enter your shortened URL</label>
-        <input type="text" id="shortUrlInput" placeholder="e.g., midget.pro/youralias" class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-dark" />
+        <label for="shortUrlInput" class="block text-sm font-medium text-dark">
+          Enter your shortened URL
+        </label>
+        <input
+          type="text"
+          id="shortUrlInput"
+          placeholder="e.g., midget.pro/youralias"
+          class="mt-1 block w-full px-4 py-3 border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-dark"
+        />
       </div>
-      <button id="trackButton" class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-secondary transition-all">Track Analytics</button>
+      <button
+        id="trackButton"
+        class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-secondary transition-all flex items-center justify-center"
+      >
+        Track Analytics
+      </button>
       <!-- Summary Section -->
       <div id="summary" class="mt-6 p-4 bg-green-100 text-green-800 rounded-lg hidden">
         <p class="text-xl font-bold">Total Clicks: <span id="clickCount"></span></p>
         <p id="avgInterval" class="mt-2 text-sm"></p>
       </div>
       <!-- Charts Section -->
-      <div id="charts" class="mt-8 grid gap-8 hidden">
+      <div id="charts" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 hidden">
         <!-- Location Chart -->
         <div class="bg-white p-6 rounded-lg shadow">
           <canvas id="locationChart"></canvas>
@@ -191,9 +204,16 @@
     const chartsDiv = document.getElementById('charts');
 
     trackButton.addEventListener('click', async () => {
+      const originalButtonText = trackButton.innerHTML;
+      // Set loading state
+      trackButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Tracking...`;
+      trackButton.disabled = true;
+
       const shortUrlInput = document.getElementById('shortUrlInput').value.trim();
       if (!shortUrlInput) {
         alert('Please enter a shortened URL.');
+        trackButton.innerHTML = originalButtonText;
+        trackButton.disabled = false;
         return;
       }
 
@@ -232,6 +252,8 @@
         alert('URL not found or an error occurred.');
         summaryDiv.classList.add('hidden');
         chartsDiv.classList.add('hidden');
+        trackButton.innerHTML = originalButtonText;
+        trackButton.disabled = false;
         return;
       }
 
@@ -246,6 +268,8 @@
         alert('An error occurred while fetching analytics.');
         summaryDiv.classList.add('hidden');
         chartsDiv.classList.add('hidden');
+        trackButton.innerHTML = originalButtonText;
+        trackButton.disabled = false;
         return;
       }
 
@@ -311,6 +335,7 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: { position: 'bottom' },
             title: { display: true, text: 'Clicks by Location' }
@@ -331,6 +356,7 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             title: { display: true, text: 'Clicks by Device Type' }
@@ -354,12 +380,17 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             title: { display: true, text: 'Clicks Over Time' }
           }
         }
       });
+
+      // Reset button state after analytics are loaded
+      trackButton.innerHTML = originalButtonText;
+      trackButton.disabled = false;
     });
   </script>
 </body>
